@@ -1,0 +1,147 @@
+GESTIÓN DE REQUISICIONES — EDICIÓN EJECUTIVA V12
+================================================
+
+Esta versión no necesita Node.js, React, instalaciones ni terminal.
+
+CÓMO ABRIR LA PÁGINA
+--------------------
+1. Mantén juntos estos archivos y la carpeta assets:
+   - index.html
+   - styles.css
+   - app.js
+   - assets/banda-principal.png
+   - assets/logo-las-americas-blanco.png
+2. Haz doble clic en index.html.
+3. La página se abrirá en Chrome, Edge o tu navegador predeterminado.
+
+CÓMO TRABAJAR DESDE VISUAL STUDIO CODE
+--------------------------------------
+1. Abre Visual Studio Code.
+2. Selecciona Archivo > Abrir carpeta.
+3. Elige la carpeta gestion-requisiciones-html completa.
+4. En el panel izquierdo podrás editar:
+   - index.html: estructura y textos.
+   - styles.css: colores y diseño visual.
+   - app.js: listas, cálculos y funcionamiento.
+5. Guarda con Ctrl + S y vuelve a cargar la página en el navegador.
+
+DÓNDE CAMBIAR EMPRESAS, RECLUTADORES Y RANGOS
+---------------------------------------------
+Abre app.js. Al principio del archivo encontrarás:
+   - EMPRESAS
+   - RECLUTADORES
+   - TURNOS
+   - RANGOS_PROMESA
+
+La lista incluye 35 empresas. Las cinco empresas identificadas son Hayco,
+B.Braun, Hanes, Gildan y Cardinal. Las posiciones restantes se muestran como
+Empresa 06 hasta Empresa 35 para que puedas sustituirlas cuando tengas el
+catálogo definitivo.
+
+RECLUTADORES Y TURNOS
+---------------------
+- Toda requisición nueva inicia con la opción Sin asignar para que el
+  administrador pueda recibirla primero y definir el responsable después.
+- Reclutador 1, Reclutador 2, Reclutador 3, Reclutador 4 y Reclutador 5.
+- Los únicos turnos disponibles son A/B y C.
+- El turno A/B mantiene el plazo base del rango de cantidad.
+- El turno C añade 3 días laborables al plazo base.
+
+REGLAS DE FECHA PROMESA
+-----------------------
+- De 1 a 30 personas: 3 días laborables.
+- De 31 a 50 personas: 4 días laborables.
+- De 51 a 100 personas: 7 días laborables.
+- Desde 101 personas: la fecha promesa se acuerda con la empresa y se registra
+  manualmente en el formulario. Para turno C, el margen adicional debe quedar
+  contemplado en ese acuerdo.
+
+EJEMPLO
+-------
+- 10 personas en turno A/B: 3 días laborables.
+- 10 personas en turno C: 6 días laborables.
+
+Al abrir esta versión sobre datos guardados de versiones anteriores, los nombres ZFLA
+Servicios, ATALYS Moldeo, Caribe Textiles, NovaLogística y Empresa 05 se
+actualizan automáticamente a los cinco nombres definidos en esta versión.
+Los nombres anteriores de reclutadores se convierten a Reclutador 1 hasta
+Reclutador 4. Los turnos anteriores también se convierten al nuevo catálogo
+A/B o C sin modificar las fechas históricas ya guardadas.
+- Diurno y Rotativo se convierten en A/B.
+- Nocturno y Mixto se convierten en C.
+
+FILTROS Y GRÁFICOS
+------------------
+- El dashboard siempre inicia en la vista general de todas las empresas.
+- Una empresa individual solamente se muestra cuando se selecciona de forma
+  deliberada en el filtro, el ranking o el directorio de empresas.
+- Al guardar una requisición, entrar a Dashboard o abrir Registro se recupera
+  automáticamente la vista global, sin tener que recargar la página.
+- Cuando existe un filtro de empresa activo, una franja visible identifica la
+  empresa y permite volver a Todas las empresas con un solo clic.
+- El filtro Empresa actualiza el foco principal, las alertas, la dona, la línea
+  y la tabla.
+- Flujo de requisiciones resume las solicitudes recibidas, asignadas, con envíos
+  y cubiertas. Sus valores responden a los filtros de empresa y mes.
+- El foco principal utiliza una sola barra ajustable; nunca muestra las 35
+  empresas una debajo de otra.
+- Empresas prioritarias muestra solamente un Top 5 por pendientes, fechas
+  próximas o menor efectividad.
+- Ver 35 empresas abre un directorio buscable y compacto. Al seleccionar una,
+  el dashboard se actualiza automáticamente.
+- El filtro Mes actualiza todo el dashboard.
+- La línea muestra la cantidad enviada por semana y la compara con el mes anterior
+  usando etiquetas ligeras y sin contornos oscuros.
+- La dona y la barra muestran cuatro grupos excluyentes: enviados en evaluación,
+  aceptados, no aceptados confirmados y pendientes de envío.
+- Cantidad no aceptada se registra manualmente cuando la empresa confirma el
+  rechazo. Una persona enviada nunca se clasifica automáticamente como no aceptada.
+- Los KPI superiores muestran únicamente volúmenes reales del período. Toda
+  persona enviada se contabiliza automáticamente como persona procesada.
+- Los estados del registro son Pendiente, Enviado y Aceptada.
+- El botón Actualizar vuelve a leer los datos guardados y refresca el detalle
+  operativo, los indicadores y los gráficos.
+- El botón Vista general vuelve a mostrar todas las empresas y limpia la búsqueda.
+- Atención requerida identifica promesas vencidas, vencimientos en 48 horas,
+  déficit de envío y requisiciones sin responsable asignado. Al pulsar una alerta, la
+  tabla muestra únicamente las requisiciones relacionadas.
+- La cabecera indica la fecha y hora del último cambio guardado.
+- El menú lateral contiene el acceso al dashboard y al formulario.
+- El menú lateral también permite ir directamente al registro o al directorio
+  completo de empresas.
+- En pantallas pequeñas, el menú se convierte en una cabecera compacta.
+- Las fórmulas internas de efectividad se mantienen para los cálculos, pero no
+  se muestran en el panel operativo.
+
+DESCARGA EN EXCEL
+-----------------
+- El único formato de descarga disponible es Excel (.xlsx).
+- Pulsa Exportar Excel sobre el Registro de requisiciones.
+- El archivo incluye únicamente los registros visibles según empresa, mes,
+  alerta, estado y búsqueda. La paginación no limita la descarga: se exportan
+  todos los resultados filtrados.
+- La exportación se crea en la computadora y no envía información a internet.
+- El Excel incluye encabezados, filtros, primera fila inmovilizada, fechas,
+  porcentajes y anchos de columna listos para trabajar.
+
+DÓNDE SE GUARDAN LOS REGISTROS
+------------------------------
+Los registros se guardan en el almacenamiento local del navegador. Esto
+significa que permanecen al cerrar y volver a abrir la página en la misma
+computadora y navegador.
+
+IMPORTANTE: si borras los datos del navegador, cambias de computadora o usas
+otro navegador, esos registros no estarán disponibles allí. Para una plataforma
+compartida por varias personas se necesitaría posteriormente una base de datos.
+
+REGISTRO DE ALTO VOLUMEN
+------------------------
+- La tabla muestra un máximo de 20 requisiciones por página.
+- Puedes filtrar por estado y ordenar por fecha, promesa, efectividad o déficit.
+- Los controles Anterior y Siguiente permiten recorrer el resultado sin crear
+  una página excesivamente larga.
+
+NOTA SOBRE EL LENGUAJE
+----------------------
+El archivo app.js usa JavaScript. Java y JavaScript son lenguajes diferentes.
+Para esta página sencilla corresponde utilizar JavaScript.

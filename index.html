@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Centro ejecutivo para la gestión de requisiciones de personal">
+  <meta name="theme-color" content="#071b2f">
+  <title>Gestión de Requisiciones · Las Américas</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Menú principal">
+      <div class="brand-block">
+        <img src="assets/logo-las-americas-blanco.png" alt="Las Américas Parque de Zona Franca">
+        
+      </div>
+
+      <div class="nav-group">
+        
+        <nav class="side-nav">
+          <button class="nav-item active" id="navDashboard" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+            <span><strong>Dashboard</strong><small>Resumen</small></span>
+          </button>
+          <button class="nav-item" id="navForm" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+            <span><strong>Nueva requisición</strong><small>Registrar solicitud</small></span>
+          </button>
+          <button class="nav-item" id="navRecords" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"></path></svg>
+            <span><strong>Registro</strong><small>Detalle y seguimiento</small></span>
+          </button>
+          <button class="nav-item" id="navCompanies" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20V8l8-4 8 4v12M8 20v-5h8v5M8 10h.01M12 10h.01M16 10h.01"></path></svg>
+            <span><strong>Empresas</strong><small id="sidebarCompanyCount">35 disponibles</small></span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-spacer"></div>
+      <div class="profile-card">
+        <span class="profile-avatar">🪪</span>
+        <span><strong>ADM</strong><small>Administrador</small></span>
+        <span class="profile-status" title="Sesión activa"></span>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <img class="mobile-logo" src="assets/logo-las-americas-blanco.png" alt="Las Américas">
+        <div class="breadcrumb"><span>Gestión Humana</span><i>/</i><strong>Centro de control</strong></div>
+        <div class="top-actions">
+          <span class="last-updated" id="lastUpdatedText">Actualizado ahora</span>
+          <span class="system-state"><i></i>Sistema local</span>
+          <span class="today" id="todayText"></span>
+        </div>
+      </header>
+
+      <main>
+        <section id="dashboardView" class="view">
+          <div class="page-content">
+            <section class="hero-band">
+              <img src="assets/banda-principal.png" alt="Vista aérea de Las Américas Parque de Zona Franca">
+              <div class="hero-shade"></div>
+              <div class="hero-copy">
+                
+                <h1>Solicitudes de Personal Empresarial</h1>
+                <span>Registro de Requisiciones de Personal Operativo por Empresa</span>
+              </div>
+              <button class="primary-button hero-action" id="newRequisitionButton" type="button">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                Nueva requisición
+              </button>
+            </section>
+
+            <section class="filter-bar" aria-label="Filtros del dashboard">
+              <div class="filter-intro">
+                <span class="filter-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"></path></svg></span>
+                <span><strong>Lectura del período</strong><small>Los indicadores responden a estos filtros</small></span>
+              </div>
+              <label class="select-control">
+                <span>Empresa</span>
+                <select id="dashboardCompanyFilter"></select>
+              </label>
+              <label class="select-control">
+                <span>Mes analizado</span>
+                <select id="monthFilter"></select>
+              </label>
+              <button class="text-button" id="clearFiltersButton" type="button">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4v6h6M20 20v-6h-6M5.5 15a7 7 0 0 0 11.8 2.4L20 14M4 10l2.7-3.4A7 7 0 0 1 18.5 9"></path></svg>
+                Vista general
+              </button>
+            </section>
+
+            <section class="active-company-notice hidden" id="activeCompanyNotice" aria-live="polite">
+              <span><i></i>Vista filtrada por empresa: <strong id="activeCompanyName">—</strong></span>
+              <button id="showAllCompaniesButton" type="button">Volver a todas las empresas</button>
+            </section>
+
+            <section class="scale-kpi-grid" aria-label="Indicadores operativos y de cumplimiento">
+              <article class="scale-kpi primary-scale-kpi">
+                <div class="scale-kpi-top"><span class="scale-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 19V9M12 19V5M19 19v-7"></path></svg></span><span class="trend-label">PROCESADAS</span></div>
+                <div class="scale-kpi-value"><strong id="processedPeriodKpi">0</strong></div>
+                <p>Personas procesadas en el período</p>
+                <small id="processedPeriodDetail">Toda persona enviada cuenta como procesada</small>
+              </article>
+              <article class="scale-kpi compact-scale-kpi">
+                <div class="scale-kpi-top"><span class="scale-icon amber-scale-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><span class="trend-label" id="pendingTrendLabel">Seguimiento</span></div>
+                <div class="scale-kpi-value"><strong id="pendingPeopleKpi">0</strong></div>
+                <p>Personas pendientes de envío</p>
+                <small id="pendingPeopleDetail">0 requisiciones abiertas</small>
+              </article>
+              <article class="scale-kpi compact-scale-kpi">
+                <div class="scale-kpi-top"><span class="scale-icon violet-scale-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg></span><span class="trend-label">SLA</span></div>
+                <div class="scale-kpi-value"><strong id="promiseComplianceKpi">0%</strong></div>
+                <p>Cumplimiento de promesa</p>
+                <small id="promiseComplianceDetail">Sin envíos completados</small>
+              </article>
+            </section>
+
+            <section class="workflow-strip" aria-labelledby="workflowTitle">
+              <div class="workflow-heading">
+                <div><span class="section-kicker">SEGUIMIENTO GENERAL</span><h2 id="workflowTitle">Flujo de requisiciones</h2></div>
+                <p id="workflowContext">Todas las empresas · período seleccionado</p>
+              </div>
+              <div class="workflow-steps">
+                <article class="workflow-step received-step"><span>01</span><div><strong id="flowReceived">0</strong><b>Recibidas</b><small>Solicitudes registradas</small></div></article>
+                <i class="workflow-arrow" aria-hidden="true">→</i>
+                <article class="workflow-step assigned-step"><span>02</span><div><strong id="flowAssigned">0</strong><b>Asignadas</b><small>Con responsable definido</small></div></article>
+                <i class="workflow-arrow" aria-hidden="true">→</i>
+                <article class="workflow-step sent-step"><span>03</span><div><strong id="flowSent">0</strong><b>Con envíos</b><small>Proceso en movimiento</small></div></article>
+                <i class="workflow-arrow" aria-hidden="true">→</i>
+                <article class="workflow-step covered-step"><span>04</span><div><strong id="flowCovered">0</strong><b>Cubiertas</b><small>Requerimiento completado</small></div></article>
+              </div>
+            </section>
+
+            <section class="attention-section" aria-labelledby="attentionTitle">
+              <div class="attention-heading">
+                <div>
+                  
+                  <h2 id="attentionTitle">Atención requerida</h2>
+                </div>
+                <p>Selecciona una alerta para revisar sus requisiciones.</p>
+              </div>
+              <div class="attention-grid" id="attentionStrip">
+                <button class="attention-card overdue-alert" type="button" data-alert="overdue" aria-pressed="false">
+                  <span class="attention-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6l4 2"></path></svg></span>
+                  <span><strong id="overdueAlert">0</strong><b>Promesas vencidas</b><small>Sin cobertura completa</small></span>
+                  <i aria-hidden="true">→</i>
+                </button>
+                <button class="attention-card soon-alert" type="button" data-alert="dueSoon" aria-pressed="false">
+                  <span class="attention-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3v3M18 3v3M4 9h16"></path><rect x="4" y="5" width="16" height="16" rx="2"></rect><path d="m9 15 2 2 4-5"></path></svg></span>
+                  <span><strong id="dueSoonAlert">0</strong><b>Vencen en 48 horas</b><small>Requieren seguimiento</small></span>
+                  <i aria-hidden="true">→</i>
+                </button>
+                <button class="attention-card deficit-alert" type="button" data-alert="deficit" aria-pressed="false">
+                  <span class="attention-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"></path></svg></span>
+                  <span><strong id="deficitAlert">0</strong><b>Con déficit de envío</b><small>Enviados debajo de lo requerido</small></span>
+                  <i aria-hidden="true">→</i>
+                </button>
+                <button class="attention-card unassigned-alert" type="button" data-alert="unassigned" aria-pressed="false">
+                  <span class="attention-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M4 19c.5-4 2.5-6 5-6s4.5 2 5 6M17 8v6M14 11h6"></path></svg></span>
+                  <span><strong id="unassignedAlert">0</strong><b>Sin asignar</b><small>Pendientes de responsable</small></span>
+                  <i aria-hidden="true">→</i>
+                </button>
+              </div>
+            </section>
+
+            <section class="overview-grid">
+              <article class="panel company-focus-panel">
+                <div class="panel-heading company-heading">
+                  <div>
+                    
+                    <h2 id="focusCompanyName">Todas las empresas</h2>
+                    <p id="companyChartSubtitle">Lectura consolidada del período</p>
+                  </div>
+                  <button class="text-button view-companies-button" id="viewCompaniesButton" type="button">Ver <span id="allCompaniesButtonCount">35</span> empresas <i>→</i></button>
+                </div>
+                <div class="focus-summary" id="companyBars"></div>
+                <div class="panel-footnote">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+                  La barra se ajusta a la empresa seleccionada sin extender el dashboard.
+                </div>
+              </article>
+
+              <aside class="priority-ranking-panel" aria-label="Ranking de empresas prioritarias">
+                <div class="ranking-heading">
+                  <div><span>RANKING OPERATIVO</span><h2>Empresas prioritarias</h2></div>
+                  <small>Top 5</small>
+                </div>
+                <div class="ranking-tabs" id="rankingTabs">
+                  <button class="active" type="button" data-ranking="pending">Pendientes</button>
+                  <button type="button" data-ranking="due">Próximas</button>
+                  <button type="button" data-ranking="effectiveness">Efectividad</button>
+                </div>
+                <div class="ranking-list" id="companyRanking"></div>
+                <button class="ranking-all-button" id="rankingAllCompaniesButton" type="button">Consultar todas las empresas <span>→</span></button>
+              </aside>
+            </section>
+
+            <section class="analytics-grid">
+              <article class="panel line-panel">
+                <div class="panel-heading">
+                  <div><span class="section-kicker"></span><h2>Personas enviadas por semana</h2><p id="lineChartSubtitle">Evolución del mes seleccionado</p></div>
+                  <span class="metric-badge"><strong id="lineTotal">0</strong><small>Total enviados</small></span>
+                </div>
+                <div class="line-legend" aria-label="Leyenda de tendencia">
+                  <span><i class="current-line-key"></i>Mes seleccionado</span>
+                  <span><i class="previous-line-key"></i>Mes anterior</span>
+                </div>
+                <div class="line-chart-wrap" id="lineChart" role="img" aria-label="Gráfico de personas enviadas por semana"></div>
+              </article>
+
+              <article class="panel donut-panel">
+                <div class="panel-heading">
+                  <div><span class="section-kicker">COMPOSICIÓN</span><h2>Resultado de candidatos</h2><p>Aceptación y cobertura</p></div>
+                  <span class="context-chip" id="donutContext">Todas</span>
+                </div>
+                <div class="donut-layout">
+                  <div class="donut-chart" id="donutChart"><div><strong id="donutTotal">0</strong><span>personas</span></div></div>
+                  <div class="donut-legend" id="donutLegend"></div>
+                </div>
+              </article>
+            </section>
+
+            <section class="records-panel" id="recordsPanel">
+              <div class="records-header">
+                <div>
+                  <span class="section-kicker"></span>
+                  <h2>Registro de requisiciones</h2>
+                  <p id="recordsCount">0 registros</p>
+                </div>
+                <div class="records-actions">
+                  <label class="search-box">
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+                    <input id="searchInput" type="search" placeholder="Buscar empresa o reclutador..." aria-label="Buscar registros">
+                  </label>
+                  <label class="compact-select"><span class="sr-only">Estado</span><select id="recordStatusFilter"><option value="Todas">Todos los estados</option><option value="Pendiente">Pendientes</option><option value="Enviado">Enviados</option><option value="Aceptada">Aceptadas</option></select></label>
+                  <label class="compact-select"><span class="sr-only">Ordenar</span><select id="recordSort"><option value="recent">Más recientes</option><option value="promise">Fecha promesa</option><option value="effectiveness">Mayor efectividad</option><option value="pending">Mayor déficit</option></select></label>
+                  <button class="secondary-button compact-button refresh-button" id="refreshRecordsButton" type="button" title="Actualizar el detalle operativo">
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.8-4M4 4v6h6M4 13a8 8 0 0 0 14.8 4M20 20v-6h-6"></path></svg>
+                    Actualizar
+                  </button>
+                  <button class="secondary-button compact-button excel-button" id="exportExcelButton" type="button">
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 3v6h6"></path><path d="M6 3h8l6 6v12H6z"></path><path d="m9 13 6 5M15 13l-6 5"></path></svg>
+                    Exportar Excel
+                  </button>
+                  <button class="primary-button compact-button" id="tableNewButton" type="button">
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                    Registrar
+                  </button>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>REQUISICIÓN</th><th>EMPRESA</th><th>RECLUTADOR/A</th><th>REQUERIDOS</th><th>ENVIADOS</th><th>ACEPTADOS</th><th>NO ACEPTADOS</th><th>FECHA PROMESA</th><th>EFECTIVIDAD</th><th>ESTADO</th><th><span class="sr-only">Acciones</span></th></tr></thead>
+                  <tbody id="recordsBody"></tbody>
+                </table>
+              </div>
+              <div class="records-footer">
+                <span id="paginationSummary">Mostrando 0 registros</span>
+                <div class="pagination-controls">
+                  <button id="previousPageButton" type="button" aria-label="Página anterior"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg></button>
+                  <span id="pageIndicator">Página 1 de 1</span>
+                  <button id="nextPageButton" type="button" aria-label="Página siguiente"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="formView" class="view hidden">
+          <div class="page-content form-page">
+            <section class="form-page-heading">
+              <button class="back-link" id="backButton" type="button">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg> Volver al dashboard
+              </button>
+              <span class="section-kicker" id="formEyebrow">NUEVO REGISTRO</span>
+              <h1 id="formTitle">Registrar requisición</h1>
+              <p>Completa la solicitud. El turno A/B mantiene el plazo base y el turno C añade 3 días laborables. Desde 101 personas se registra la fecha acordada con la empresa.</p>
+            </section>
+
+            <form class="form-layout" id="requisitionForm">
+              <div class="form-card">
+                <div class="form-section-title"><span>01</span><div><h2>Datos de la solicitud</h2><p>Información base de la requisición</p></div></div>
+                <div class="form-grid">
+                  <label><span>Fecha de requisición <b>*</b></span><input id="requestDate" type="date" required></label>
+                  <label><span>Empresa <b>*</b></span><select id="company" required></select></label>
+                  <label><span>Responsable / reclutador <b>*</b></span><select id="recruiter" required></select><small class="field-help">El administrador puede asignarlo al recibir la solicitud o posteriormente.</small></label>
+                  <label><span>Cantidad requerida <b>*</b></span><input id="quantity" type="number" min="1" value="1" required></label>
+                  <label><span>Turno <b>*</b></span><select id="shift" required></select></label>
+                  <label>
+                    <span>Fecha promesa <b>*</b></span>
+                    <div class="readonly-field" id="automaticPromiseField"><strong id="promiseDateDisplay">—</strong><small id="promiseDaysDisplay">0 días laborables</small></div>
+                    <input class="hidden" id="manualPromiseDate" type="date" aria-describedby="promiseAgreementNote">
+                    <small class="promise-agreement-note hidden" id="promiseAgreementNote">Fecha acordada con la empresa para requisiciones de 101 personas o más.</small>
+                  </label>
+                </div>
+
+                <div class="form-divider"></div>
+                <div class="form-section-title"><span>02</span><div><h2>Resultado del envío</h2><p>Completa esta sección cuando el proceso avance</p></div></div>
+                <div class="form-grid">
+                  <label><span>Fecha de envío</span><input id="sendDate" type="date"></label>
+                  <label><span>Cantidad enviada</span><input id="sentQuantity" type="number" min="0" value="0"></label>
+                  <label><span>Cantidad aceptada</span><input id="acceptedQuantity" type="number" min="0" value="0"></label>
+                  <label><span>Cantidad no aceptada</span><input id="notAcceptedQuantity" type="number" min="0" value="0"><small class="field-help">Regístrala únicamente cuando la empresa confirme el rechazo.</small></label>
+                  <label><span>% de aceptados</span><div class="readonly-field"><strong id="acceptanceDisplay">0%</strong><small id="acceptanceDetail">0 de 0 personas</small></div></label>
+                </div>
+
+                <div class="form-actions">
+                  <button class="secondary-button" id="cancelButton" type="button">Cancelar</button>
+                  <button class="primary-button" type="submit"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg><span id="saveButtonText">Registrar requisición</span></button>
+                </div>
+              </div>
+
+              <aside class="calculation-card">
+                <span class="section-kicker">CÁLCULO EN VIVO</span>
+                <h2>Lectura del proceso</h2>
+                <div class="calculation-hero"><span>Efectividad general</span><strong id="liveGeneral">—</strong><small id="liveGeneralMessage">Completa la fecha de envío</small></div>
+                <div class="metric-line"><span>Fecha promesa<small id="liveVacancies">Según 1 vacante</small></span><strong id="livePromise">—</strong></div>
+                <div class="metric-line"><span>¿Cumplió promesa?<small>Comparado con la fecha de envío</small></span><strong id="liveFulfilled">Pendiente</strong></div>
+                <div class="metric-line"><span>Puntuación de tiempo<small>Antes, a tiempo o con retraso</small></span><strong id="liveTimeliness">—</strong></div>
+                <div class="metric-line"><span>Tasa de aceptación<small>Aceptados ÷ enviados</small></span><strong id="liveAcceptance">0%</strong></div>
+                <div class="range-note"><strong>Rango y turno aplicados</strong><p id="rangeApplied">Para 1 persona, el turno A/B mantiene la fecha promesa en 3 días laborables.</p></div>
+              </aside>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="company-modal hidden" id="companyModal" role="dialog" aria-modal="true" aria-labelledby="companyModalTitle">
+    <div class="modal-backdrop" data-close-modal="true"></div>
+    <section class="company-modal-card">
+      <div class="company-modal-header">
+        <div><span class="section-kicker">DIRECTORIO OPERATIVO</span><h2 id="companyModalTitle">Todas las empresas</h2><p>Busca, consulta y selecciona una empresa sin recargar el dashboard.</p></div>
+        <button class="modal-close" id="closeCompanyModalButton" type="button" aria-label="Cerrar"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></svg></button>
+      </div>
+      <div class="company-modal-tools">
+        <label class="modal-search"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg><input id="companyDirectorySearch" type="search" placeholder="Buscar entre las empresas..." aria-label="Buscar empresa"></label>
+        <span id="companyDirectoryCount">35 empresas</span>
+      </div>
+      <div class="company-directory-list" id="companyDirectoryList"></div>
+    </section>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status"><span>✓</span><p id="toastMessage"></p></div>
+</body>
+</html>
